@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import '../enums/filter_options.dart';
 import '../providers/product_provider.dart';
 import '../widgets/products_grid.dart';
+import '../widgets/badge.dart';
+import '../providers/cart.dart';
+import '../screens/cart_screen.dart';
 
 class ProductsOverviewScreen extends StatefulWidget {
 
@@ -39,7 +42,22 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             itemBuilder: (ctx) => [
               const PopupMenuItem(value: FilterOptions.FAVOURITES,child: Text('Only favourites'),),
               const PopupMenuItem(value: FilterOptions.ALL,child: Text('Show all'),)
-            ]),
+            ]
+          ),
+          Consumer<Cart>(
+            builder: (context, cart, ch) => Badge(
+              value: cart.itemCount.toString(),
+              child: ch ?? const Icon(Icons.shopping_cart)
+            ),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+              },
+              icon: const Icon(
+                Icons.shopping_cart
+              ),
+            )
+          )
         ],
       ),
       body: ProductsGrid(showOnlyFavourites: _showOnlyFavourites,),
