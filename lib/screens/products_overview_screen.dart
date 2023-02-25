@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
 import '../enums/filter_options.dart';
@@ -7,6 +8,7 @@ import '../widgets/products_grid.dart';
 import '../widgets/badge.dart';
 import '../providers/cart.dart';
 import '../screens/cart_screen.dart';
+import '../widgets/app_drawer.dart';
 
 class ProductsOverviewScreen extends StatefulWidget {
 
@@ -60,6 +62,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           )
         ],
       ),
+      drawer: const AppDrawer(),
       body: ProductsGrid(showOnlyFavourites: _showOnlyFavourites,),
     );
   }

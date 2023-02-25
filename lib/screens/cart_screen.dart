@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
 import '../widgets/cart_item.dart';
 import '../providers/cart.dart';
+import '../providers/orders.dart';
 
 class CartScreen extends StatelessWidget {
 
@@ -30,7 +32,7 @@ class CartScreen extends StatelessWidget {
                   const Spacer(), 
                   Chip(
                     label: Text(
-                      '₹${cart.totalAmount}', 
+                      '₹${cart.totalAmount.toStringAsFixed(2)}', 
                       style: TextStyle(
                         color: Theme.of(context).primaryTextTheme.titleMedium?.color
                       ),
@@ -38,10 +40,16 @@ class CartScreen extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
                   TextButton(
-                    onPressed: () {}, 
-                    child: Text(
+                    onPressed: () {
+                      Provider.of<Orders>(context, listen: false).addOrder(
+                        cart.items.values.toList(),
+                        cart.totalAmount
+                      );
+                      cart.clear();
+                    }, 
+                    child: const Text(
                       'ORDER NOW',
-                      style: TextStyle(color: Theme.of(context).primaryTextTheme.titleMedium?.color),
+                      style: TextStyle(color: Colors.purple),
                     ),
                   )
                 ],
@@ -54,7 +62,8 @@ class CartScreen extends StatelessWidget {
               itemBuilder: ((context, index) => 
                 CartItem(
                   id: cart.items.values.toList()[index].id, 
-                  price: cart.items.values.toList()[index].price, 
+                  productId: cart.items.keys.toList()[index],
+                  price: cart.items.values.toList()[index].price,
                   quantity: cart.items.values.toList()[index].quantity, 
                   title: cart.items.values.toList()[index].title
                 )
