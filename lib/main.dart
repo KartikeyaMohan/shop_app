@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
-import 'package:shop_app/screens/orders_screen.dart';
 
 import './providers/cart.dart';
 import './screens/product_detail_screen.dart';
 import './screens/products_overview_screen.dart';
 import './providers/product_provider.dart';
 import './screens/cart_screen.dart';
-import '../providers/orders.dart';
+import './providers/orders.dart';
+import './screens/user_products_screen.dart';
+import './screens/edit_product_screen.dart';
+import './screens/orders_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,11 +39,13 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.deepOrange,
           fontFamily: 'Lato'
         ),
-        home: ProductsOverviewScreen(),
+        home: const ProductsOverviewScreen(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
           CartScreen.routeName: (ctx) => const CartScreen(),
-          OrdersScreen.routeName: (ctx) => const OrdersScreen()
+          OrdersScreen.routeName: (ctx) => const OrdersScreen(),
+          UserProductsScreen.routeName: (ctx) => const UserProductsScreen(),
+          EditProductScreen.routeName: (ctx) => const EditProductScreen(),
         },
       ),
     );
