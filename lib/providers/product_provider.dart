@@ -24,7 +24,7 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/products.json';
+    const url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/flutter_shop/products.json';
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>?;
@@ -48,7 +48,7 @@ class ProductProvider with ChangeNotifier {
    }
 
   Future<void> addProduct(Product product) async {
-    const url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/products.json';
+    const url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/flutter_shop/products.json';
     try {
       final response = await http.post(
         Uri.parse(url), 
@@ -77,7 +77,7 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> updateProduct(String id,
                      Product newProduct) async {
-    final url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json';
+    final url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/flutter_shop/products/$id.json';
     final prodIndex = _items.indexWhere((product) => product.id == id);
     if (prodIndex >= 0) {
       await http.patch(
@@ -95,7 +95,7 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async{
-    final url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json';
+    final url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/flutter_shop/products/$id.json';
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex] as Product?;
     _items.removeAt(existingProductIndex);

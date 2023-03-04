@@ -29,7 +29,7 @@ class Product with ChangeNotifier{
     final oldStatus = isFavourite;
     isFavourite = !isFavourite;
     notifyListeners();
-    final url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json';
+    final url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/flutter_shop/products/$id.json';
     try {
       final response = await http.patch(
         Uri.parse(url),
