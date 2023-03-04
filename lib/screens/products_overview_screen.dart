@@ -21,10 +21,26 @@ class ProductsOverviewScreen extends StatefulWidget {
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 
   var _showOnlyFavourites = false;
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isInit) {
+      _isLoading = true;
+      Provider.of<ProductProvider>(context)
+        .fetchAndSetProducts().then((_) {
+          setState(() {
+            _isLoading = false;
+          });
+        });
+    }
+    _isInit = false;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final productData = Provider.of<ProductProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Shop'),
@@ -63,7 +79,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: const AppDrawer(),
-      body: ProductsGrid(showOnlyFavourites: _showOnlyFavourites,),
+      body: _isLoading ? 
+        const Center(
+          child: CircularProgressIndicator(),
+        ) : 
+        ProductsGrid(showOnlyFavourites: _showOnlyFavourites,),
     );
   }
 }
