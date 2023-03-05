@@ -19,42 +19,60 @@ class ProductDetailScreen extends StatelessWidget {
       listen: false
     ).findById(productId);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loadedProduct.title)
-      ), 
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 300,
-              width: double.infinity,
-              child: Image.network(
-                loadedProduct.imageUrl,
-                fit: BoxFit.cover,
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                loadedProduct.title,
+                style: const TextStyle(color: Colors.green),
+              ),
+              background: Hero(
+                tag: loadedProduct.id as String,
+                child: Image.network(
+                  loadedProduct.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            const SizedBox(height: 10,),
-            Text(
-              '₹1${loadedProduct.price}',
-              style: const TextStyle(
-                color: Colors.grey,
-                fontSize: 20
-              ),
-            ),
-            const SizedBox(height: 10,),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10
-              ),
-              width: double.infinity,
-              child: Text(
-                loadedProduct.description,
-                textAlign: TextAlign.center,
-                softWrap: true,
-              ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                const SizedBox(height: 10,),
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 20
+                  ),
+                  child: Text(
+                    '₹1${loadedProduct.price}',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 20
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10,),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20
+                  ),
+                  width: double.infinity,
+                  child: Text(
+                    loadedProduct.description,
+                    textAlign: TextAlign.start,
+                    softWrap: true,
+                  ),
+                ),
+                const SizedBox(height: 800,)
+              ]
             )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
