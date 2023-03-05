@@ -11,15 +11,14 @@ class UserProductsScreen extends StatelessWidget {
 
   static const routeName = '/user-products';
 
-  Future<void> _refereshProducst(BuildContext context) async {
-    Provider.of<ProductProvider>(context, listen: false).fetchAndSetProducts();
+  Future<void> _refereshProducts(BuildContext context) async {
+    Provider.of<ProductProvider>(context, listen: false).fetchAndSetProducts(true);
   }
 
   const UserProductsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<ProductProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Products'),
@@ -32,23 +31,30 @@ class UserProductsScreen extends StatelessWidget {
         ],
       ),
       drawer: const AppDrawer(),
-      body: RefreshIndicator(
-        onRefresh: () => _refereshProducst(context),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: ListView.builder(
-            itemCount: productsData.items.length,
-            itemBuilder: (_, index) => 
-              Column(
-                children: <Widget>[
-                  UserProductItem(
-                    id: productsData.items[index].id as String,
-                    title: productsData.items[index].title, 
-                    imageUrl: productsData.items[index].imageUrl
-                  ),
-                  const Divider()
-                ],
-              )
+      body: FutureBuilder(
+        future: _refereshProducts(context),
+        builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting ?
+         const Center(child: CircularProgressIndicator(),) : 
+         RefreshIndicator(
+          onRefresh: () => _refereshProducts(context),
+          child: Consumer<ProductProvider>(
+            builder: (ctx, productsData, _) => Padding(
+              padding: const EdgeInsets.all(10),
+              child: ListView.builder(
+                itemCount: productsData.items.length,
+                itemBuilder: (_, index) => 
+                  Column(
+                    children: <Widget>[
+                      UserProductItem(
+                        id: productsData.items[index].id as String,
+                        title: productsData.items[index].title, 
+                        imageUrl: productsData.items[index].imageUrl
+                      ),
+                      const Divider()
+                    ],
+                  )
+              ),
+            ),
           ),
         ),
       ),

@@ -33,8 +33,9 @@ class ProductProvider with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  Future<void> fetchAndSetProducts() async {
-    var url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/flutter_shop/products.json?auth=$authToken';
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    var url = 'https://react-projects-a8b61-default-rtdb.asia-southeast1.firebasedatabase.app/flutter_shop/products.json?auth=$authToken&$filterString';
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>?;
@@ -74,7 +75,8 @@ class ProductProvider with ChangeNotifier {
           'title': product.title,
           'description': product.description,
           'imageUrl': product.imageUrl,
-          'price': product.price
+          'price': product.price,
+          'creatorId': userId
         })
       );
       final newProduct = Product(
